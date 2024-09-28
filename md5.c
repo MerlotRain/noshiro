@@ -20,11 +20,9 @@
  * IN THE SOFTWARE.
  */
 
-#include "stypes.h"
-
 #include "md5.h"
 
-const int av_md5_size = sizeof(struct MD5);
+const int av_md5_size = sizeof(md5_t);
 
 static void
 byteSwap(uint32_t *buf, unsigned words)
@@ -48,7 +46,7 @@ byteSwap(uint32_t *buf, unsigned words)
  * initialization constants.
  */
 static void
-md5_init(struct MD5 *ctx)
+md5_init(md5_t *ctx)
 {
 	ctx->buf[0] = 0x67452301;
 	ctx->buf[1] = 0xefcdab89;
@@ -64,7 +62,7 @@ md5_init(struct MD5 *ctx)
  * of bytes.
  */
 static void
-md5_update(struct MD5 *ctx, const uint8_t *src, size_t len)
+md5_update(md5_t *ctx, const uint8_t *src, size_t len)
 {
 	uint32_t t;
 
@@ -106,7 +104,7 @@ md5_update(struct MD5 *ctx, const uint8_t *src, size_t len)
  * 1 0* (64-bit count of bits processed, MSB-first)
  */
 static void
-md5_final(struct MD5 *ctx, uint8_t *dst)
+md5_final(md5_t *ctx, uint8_t *dst)
 {
 	int count = ctx->bytes[0] & 0x3f; /* Number of bytes in ctx->in */
 	uint8_t *p = (uint8_t *)ctx->in + count;
@@ -246,7 +244,7 @@ md5_transform(uint32_t buf[4], uint32_t const in[16])
 void
 md5_sum(uint8_t *dst, const uint8_t *src, size_t len)
 {
-	struct MD5 ctx;
+	md5_t ctx;
 
 	md5_init(&ctx);
 	md5_update(&ctx, src, len);

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.10)
 project(noshiro LANGUAGES C)
 
 add_library(noshiro STATIC
@@ -16,12 +16,11 @@ add_library(noshiro STATIC
     stack.c
     utf8.c
     uuid.c
-    
+
     base64.h
     bitset.h
     bytebuffer.h
     byteswap.h
-    file.h
     hash.h
     heap.h
     log.h
@@ -32,7 +31,6 @@ add_library(noshiro STATIC
     sds.h
     stack.h
     stf.h
-    stypes.h
     utf8.h
     uuid.h
 )

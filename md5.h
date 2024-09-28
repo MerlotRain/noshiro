@@ -28,18 +28,18 @@
 
 extern const int md5_size; /* size of MD5 digest in bytes */
 
-struct MD5 {
+typedef struct {
 	uint32_t buf[4];
 	uint32_t bytes[2];
 	uint32_t in[16];
-};
+} md5_t;
 
 /**
  * Initialize MD5 hashing.
  *
  * @param ctx pointer to the function context (of size md5_size)
  */
-void md5_init(struct MD5 *ctx);
+void md5_init(md5_t *ctx);
 
 /**
  * Update hash value.
@@ -48,7 +48,7 @@ void md5_init(struct MD5 *ctx);
  * @param src input data to update hash with
  * @param len input data length
  */
-void md5_update(struct MD5 *ctx, const uint8_t *src, size_t len);
+void md5_update(md5_t *ctx, const uint8_t *src, size_t len);
 
 /**
  * Finish hashing and output digest value.
@@ -56,7 +56,7 @@ void md5_update(struct MD5 *ctx, const uint8_t *src, size_t len);
  * @param ctx hash function context
  * @param dst buffer where output digest value is stored
  */
-void md5_final(struct MD5 *ctx, uint8_t *dst);
+void md5_final(md5_t *ctx, uint8_t *dst);
 
 /**
  * Hash an array of data.

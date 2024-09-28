@@ -19,3 +19,34 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
+
+#ifndef __NOSHIRO_BITSET_H__
+#define __NOSHIRO_BITSET_H__
+
+#include <stddef.h>
+#include <stdbool.h>
+
+enum
+{
+	BITSET_STATE_NONE, ///< All bits are LW_FALSE
+	BITSET_STATE_ALL,  ///< All bits are LW_TRUE
+	BITSET_STATE_ANY   ///< Some bits are LW_TRUE
+};
+
+typedef struct {
+	size_t length;
+	size_t capacity;
+	char data[];
+} bitset_t;
+
+bitset_t *bitset_new(size_t size);
+void bitset_free(bitset_t *bs);
+void bitset_set(bitset_t *bs, size_t index);
+void bitset_clear(bitset_t *bs, size_t index);
+bool bitset_test(bitset_t *bs, size_t index);
+void bitset_flip(bitset_t *bs, size_t index);
+int bitset_state(bitset_t *bs);
+size_t bitset_count(bitset_t *bs);
+size_t bitset_size(bitset_t *bs);
+
+#endif /* __NOSHIRO_BITSET_H__ */

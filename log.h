@@ -20,10 +20,80 @@
  * IN THE SOFTWARE.
  */
 
-
 #ifndef __NOSHIRO_LOG_H__
 #define __NOSHIRO_LOG_H__
 
-void ns_log(void *cl, int level, const char *fmt, ...);
+#include <stdarg.h>
+
+typedef enum
+{
+	none,
+	report,
+	debug,
+	warn,
+	error
+} log_level_t;
+
+typedef void (*lwreporter)(const char *fmt, va_list ap);
+typedef void (*lwdebuglogger)(int level, const char *fmt, va_list ap);
+
+/* Display a notice at the given debug level */
+#define LWDEBUG(level, msg) \
+	do \
+	{ \
+		if (POSTGIS_DEBUG_LEVEL >= level) \
+			lwdebug(level, \
+				"[%s:%s:%d] " msg, \
+				__FILE__, \
+				__func__, \
+				__LINE__); \
+	} while (0);
+
+/* Display a formatted notice at the given debug level
+ * (like printf, with variadic arguments) */
+#define LWDEBUGF(level, msg, ...) \
+	do \
+	{ \
+		if (POSTGIS_DEBUG_LEVEL >= level) \
+			lwdebug(level, \
+				"[%s:%s:%d] " msg, \
+				__FILE__, \
+				__func__, \
+				__LINE__, \
+				__VA_ARGS__); \
+	} while (0);
+
+/**
+ * Write a notice out to the notice handler.
+ *
+ * Uses standard printf() substitutions.
+ * Use for messages you always want output.
+ * For debugging, use LWDEBUG() or LWDEBUGF().
+ * @ingroup logging
+ */
+void lwnotice(const char *fmt, ...);
+
+/**
+ * Write a notice out to the error handler.
+ *
+ * Uses standard printf() substitutions.
+ * Use for errors you always want output.
+ * For debugging, use LWDEBUG() or LWDEBUGF().
+ * @ingroup logging
+ */
+void lwerror(const char *fmt, ...);
+
+/**
+ * Write a debug message out.
+ * Don't call this function directly, use the
+ * macros, LWDEBUG() or LWDEBUGF(), for
+ * efficiency.
+ * @ingroup logging
+ */
+void lwdebug(int level, const char *fmt, ...);
+
+void lwsetloglevel(log_level_t level);
+
+log_level_t lwgetloglevel(void);
 
 #endif /* __NOSHIRO_LOG_H__ */
