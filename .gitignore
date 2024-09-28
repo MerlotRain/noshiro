@@ -1,0 +1,14 @@
+.vs
+.vscode
+build
+out
+.clang-format
+.DS_Store
+
+*.o
+*.a
+*.exe
+*.pdb
+*.lib
+*.ilk
+*.obj
